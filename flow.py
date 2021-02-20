@@ -5,13 +5,13 @@ from prefect.tasks.docker import (
     GetContainerLogs,
     WaitOnContainer,
 )
-from prefect.triggers import  always_run
+from prefect.triggers import always_run
 
 
 container = CreateContainer(
     image_name='spookyimage',
     command='''/home/24-hours.sh''',
-#   environment=['DB_NAME=scary_model_storage.db']
+    environment=['DB_NAME=scary_model_storage.db']
 )
 start = StartContainer()
 logs = GetContainerLogs(trigger=always_run)
@@ -29,3 +29,8 @@ logs.set_upstream(status_code, flow=flow)
 
 # run flow and print logs
 flow_state = flow.run()
+
+print('=' * 30)
+print('Container Logs')
+print('=' * 30)
+print(flow_state.result[logs].result)

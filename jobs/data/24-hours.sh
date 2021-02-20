@@ -18,7 +18,15 @@ else
   done
 fi
 
+
 echo 'ML to all the files'
 for filename in $(find data -name '*.json')
     do
       echo 'Processing $filename...'
+      python ../python/do_all_the_machine_learning.py ${filename}
+done
+
+echo 'Checking database'
+sqlite3 $DB_NAME 'SELECT COUNT(*) FROM models'
+
+echo 'Ending. Have a nice day!'
